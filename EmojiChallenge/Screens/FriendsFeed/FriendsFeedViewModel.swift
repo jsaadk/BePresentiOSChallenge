@@ -27,19 +27,17 @@ import Observation
         self.reactingToFriend = reactingToFriend
     }
     
-    func fetchFriends(forceRefresh: Bool = false) {
+    func fetchFriends(forceRefresh: Bool = false) async {
         guard friends.isEmpty || forceRefresh else {
             return
         }
         isLoading = true
-        Task {
-            do {
-                friends = try await friendsRepository.fetchFriends()
-            } catch {
-                // No error handling in current design
-            }
-            isLoading = false
+        do {
+            friends = try await friendsRepository.fetchFriends()
+        } catch {
+            // No error handling in current design
         }
+        isLoading = false
     }
     
     func applyReaction(_ emoji: Reaction.Emoji, to friend: Friend) {

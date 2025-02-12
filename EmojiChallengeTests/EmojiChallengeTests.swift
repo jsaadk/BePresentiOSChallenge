@@ -11,20 +11,15 @@ import Testing
 struct EmojiChallengeTests {
 
     @Test func example() async throws {
-        let mockRepository = MockFriendsRepository(isLoading: true, friends: [])
+        let mockRepository = MockFriendsRepository(friendsToReturn: [])
         
-        var friendsListView = await FriendsFeedView()
-            .environment(
-                \.friendsRepository,
-                 FriendsRepositoryWrapper(underlyingRepository: mockRepository)
-            )
-        
-        print(friendsListView)
-        
-        await confirmation { confirmation in
+        let friendsListView = await FriendsFeedView(friendsRepository: mockRepository)
+       
+        await confirmation { confitmation in
             mockRepository.fetchFriendsClosure = {
-                confirmation.confirm()
+                confitmation.confirm()
             }
+            await friendsListView.fetchFriends().value
         }
     }
 }

@@ -42,7 +42,7 @@ struct FriendsFeedView: View {
             .background(Color.AppTheme.background)
             .listStyle(.plain)
             .onAppear {
-                viewModel.fetchFriends()
+                fetchFriends()
             }
             .sheet(item: $viewModel.reactingToFriend, content: { friend in
                 EmojiPicker(
@@ -55,11 +55,17 @@ struct FriendsFeedView: View {
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.height(250)])
             })
-            .navigationTitle("Friends Feed")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar(content: {
+                ToolbarItem(placement: .principal) {
+                    Text("Friends Feed")
+                        .font(.title2.bold())
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Refresh") {
-                        viewModel.fetchFriends(forceRefresh: true)
+                        fetchFriends(forceRefresh: true)
                     }
                 }
             })
@@ -67,6 +73,13 @@ struct FriendsFeedView: View {
                 Color.AppTheme.background,
                 for: .navigationBar
             )
+        }
+    }
+    
+    @discardableResult
+    func fetchFriends(forceRefresh: Bool = false) -> Task<Void, Never> {
+        Task {
+            await viewModel.fetchFriends(forceRefresh: forceRefresh)
         }
     }
 }
