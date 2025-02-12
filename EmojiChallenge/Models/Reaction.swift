@@ -8,10 +8,10 @@
 import Foundation
 import Observation
 
-@Observable class Reaction {
-    enum Emoji: String, CaseIterable {
+@Observable public class Reaction {
+    public enum Emoji: String, CaseIterable {
         case thumbsUp = "👍"
-        case thubmsDown = "👎"
+        case thumbsDown = "👎"
         case flexedBicep = "💪"
         case salutingFace = "🫡"
         case handsRaised = "🙌"
@@ -30,20 +30,20 @@ import Observation
         case upsideDownFace = "🙃"
     }
     
-    let emoji: Emoji
-    let count: Int
-    var isSelected: Bool
-    var totalCount: Int {
+    public let emoji: Emoji
+    public let count: Int
+    public var isSelected: Bool
+    public var totalCount: Int {
         count + (isSelected ? 1 : 0)
     }
     
-    init(emoji: Emoji, count: Int = 0, isSelected: Bool = false) {
+    public init(emoji: Emoji, count: Int = 0, isSelected: Bool = false) {
         self.emoji = emoji
         self.count = count
         self.isSelected = isSelected
     }
     
-    convenience init?(emoji: String, count: Int) {
+    public convenience init?(emoji: String, count: Int) {
         guard let emoji = Emoji(rawValue: emoji) else {
             return nil
         }

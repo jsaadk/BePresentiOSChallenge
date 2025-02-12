@@ -14,10 +14,9 @@ struct EmojiPicker: View {
     
     var body: some View {
         VStack(spacing: 15) {
-        
             Text("React with an emoji")
                 .font(.caption.bold())
-                .foregroundStyle(Color("gray"))
+                .foregroundStyle(Color.AppTheme.gray)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 5)
             
@@ -41,7 +40,7 @@ struct EmojiPicker: View {
             Spacer()
         }
         .padding(.init(top: 40, leading: 30, bottom: 30, trailing: 30))
-        .background(Color("background"))
+        .background(Color.AppTheme.background)
     }
 }
 

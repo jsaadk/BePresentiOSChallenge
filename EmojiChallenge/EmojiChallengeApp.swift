@@ -11,7 +11,12 @@ import SwiftUI
 struct EmojiChallengeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FriendsFeedView(
+                friendsRepository: FriendsRepositoryImpl(
+                    networkingService: NetworkingServiceImpl(),
+                    urlProvider: URLProviderImpl()
+                )
+            )
         }
     }
 }

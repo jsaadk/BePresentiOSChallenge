@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol NetworkingService {
+    func request<T: Decodable>(_ returnType: T.Type, request: URLRequest) async throws -> T
+}
+
 enum NetworkError: Error {
     case invalidURL
     case requestFailed(statusCode: Int)
@@ -15,7 +19,7 @@ enum NetworkError: Error {
     case dataConversionFailure
 }
 
-struct NetworkingService {
+struct NetworkingServiceImpl: NetworkingService {
     private let urlSession: URLSession
     private let formatter = DateFormatter.apiFormatter
     

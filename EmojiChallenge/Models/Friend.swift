@@ -8,15 +8,15 @@
 import Foundation
 import Observation
 
-@Observable class User: Decodable, Identifiable {
-    let id: String = UUID().uuidString
-    let userId: String
-    let imageUrl: URL
-    let name: String
-    let timestamp: Date
-    let activityTitle: String
-    let activityMainEmoji: String
-    var reactions: [Reaction]
+@Observable public class Friend: Decodable, Identifiable {
+    public let id: String = UUID().uuidString
+    public let userId: String
+    public let imageUrl: URL
+    public let name: String
+    public let timestamp: Date
+    public let activityTitle: String
+    public let activityMainEmoji: String
+    public var reactions: [Reaction]
     
     enum CodingKeys: String, CodingKey {
         case userId
@@ -28,7 +28,7 @@ import Observation
         case reactions
     }
     
-    init(
+    public init(
         id: String,
         userId: String,
         imageUrl: URL,
@@ -47,7 +47,7 @@ import Observation
         self.reactions = reactions
     }
     
-    required init(from decoder: any Decoder) throws {
+    required public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.userId = try container.decode(String.self, forKey: .userId)
         self.imageUrl = try container.decode(URL.self, forKey: .imageUrl)

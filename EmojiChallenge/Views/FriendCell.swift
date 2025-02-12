@@ -8,71 +8,85 @@
 import SwiftUI
 
 struct FriendCell: View {
+    private enum Constants {
+        static let mainCornerRadius: CGFloat = 20
+        static let mainVStackSpacing: CGFloat = 20
+        static let mainPadding = EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30)
+        static let avatarSize: CGFloat = 50
+        static let addReactionPadding = EdgeInsets(top: 7, leading: 8, bottom: 8, trailing: 8)
+        static let reactionsPerRow = 3
+    }
     enum Action {
         case didTapReaction(Reaction)
         case didTapAddReaction
     }
     
-    let friend: User
+    let friend: Friend
     let onAction: (Action) -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // User section
-            HStack(spacing: 16) {
-                AsyncImage(url: friend.imageUrl) { result in
-                    if let image = result.image {
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    } else {
-                        Color("gray")
-                    }
-                }
-                .cornerRadius(25)
-                .frame(width: 50, height: 50)
-                VStack(alignment: .leading) {
-                    Text(friend.name)
-                        .font(.headline)
-                        .foregroundStyle(Color("primary"))
-                        .lineLimit(1)
-                    Text("\(friend.timestamp.relativeDateString)")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color("gray"))
-                }
-            }
-            
-            //Summary section
-            HStack(alignment: .top) {
-                Text(friend.activityTitle)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .multilineTextAlignment(.leading)
-                    .font(.title.weight(.semibold))
-                    .foregroundStyle(Color("black"))
-                Spacer(minLength: 16)
-                Text(friend.activityMainEmoji)
-                    .font(.system(size: 60))
-            }
-            
+        VStack(alignment: .leading, spacing: Constants.mainVStackSpacing) {
+            userMetadataHeader
+            activitySummary
             reactions
         }
-        .padding(.init(top: 20, leading: 30, bottom: 20, trailing: 30))
+        .padding(Constants.mainPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 20).fill(Color("white")))
+        .background(
+            RoundedRectangle(cornerRadius: Constants.mainCornerRadius)
+                .fill(Color.AppTheme.white)
+        )
+    }
+    
+    var userMetadataHeader: some View {
+        HStack(spacing: 16) {
+            AsyncImage(url: friend.imageUrl) { result in
+                if let image = result.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    Color.AppTheme.gray
+                }
+            }
+            .clipShape(Circle())
+            .frame(width: Constants.avatarSize, height: Constants.avatarSize)
+            VStack(alignment: .leading) {
+                Text(friend.name)
+                    .font(.headline)
+                    .foregroundStyle(Color.AppTheme.primary)
+                    .lineLimit(1)
+                Text("\(friend.timestamp.relativeDateString)")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.AppTheme.gray)
+            }
+        }
+    }
+    
+    var activitySummary: some View {
+        HStack(alignment: .top) {
+            Text(friend.activityTitle)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.leading)
+                .font(.title.weight(.semibold))
+                .foregroundStyle(Color.AppTheme.black)
+            Spacer(minLength: 16)
+            Text(friend.activityMainEmoji)
+                .font(.system(size: 60))
+        }
     }
     
     var reactions: some View {
         let reactions = friend.reactions
-        let reactionsPerRow = 3
-        let totalFullRows = reactions.count / reactionsPerRow
-        let remainingReactions = reactions.count % reactionsPerRow
+        let totalFullRows = reactions.count / Constants.reactionsPerRow
+        let remainingReactions = reactions.count % Constants.reactionsPerRow
         
         //Reactions section
         return VStack(alignment: .leading) {
             ForEach(0..<totalFullRows, id: \.self) { rowIndex in
                 HStack {
-                    ForEach(0..<reactionsPerRow, id: \.self) { colIndex in
-                        let reactionIndex = rowIndex * reactionsPerRow + colIndex
+                    ForEach(0 ..< Constants.reactionsPerRow, id: \.self) { colIndex in
+                        let reactionIndex = rowIndex * Constants.reactionsPerRow + colIndex
                         if reactionIndex < reactions.count {
                             buildReactionButton(reactions[reactionIndex])
                         }
@@ -84,8 +98,8 @@ struct FriendCell: View {
             }
             HStack {
                 if remainingReactions > 0 {
-                    ForEach(0..<remainingReactions, id: \.self) { colIndex in
-                        let reactionIndex = totalFullRows * reactionsPerRow + colIndex
+                    ForEach(0 ..< remainingReactions, id: \.self) { colIndex in
+                        let reactionIndex = totalFullRows * Constants.reactionsPerRow + colIndex
                         if reactionIndex < reactions.count {
                             buildReactionButton(reactions[reactionIndex])
                         }
@@ -106,12 +120,12 @@ struct FriendCell: View {
         }
         .buttonStyle(.plain)
         .font(.caption.bold())
-        .foregroundStyle(Color("gray"))
+        .foregroundStyle(Color.AppTheme.gray)
         .padding(.init(integerLiteral: 7))
         .background(
             Capsule()
-                .fill(Color("secondary"))
-                .stroke(reaction.isSelected ? Color("primary") : Color.clear, lineWidth: 1.5)
+                .fill(Color.AppTheme.secondary)
+                .stroke(reaction.isSelected ? Color.AppTheme.primary : Color.clear, lineWidth: 1.5)
         )
     }
     
@@ -124,9 +138,9 @@ struct FriendCell: View {
         }
         .buttonStyle(.plain)
         .font(.headline)
-        .foregroundStyle(Color("gray"))
-        .padding(.init(top: 7, leading: 8, bottom: 8, trailing: 8))
-        .background(Color("secondary"))
+        .foregroundStyle(Color.AppTheme.gray)
+        .padding(Constants.addReactionPadding)
+        .background(Color.AppTheme.secondary)
         .clipShape(Circle())
     }
 }

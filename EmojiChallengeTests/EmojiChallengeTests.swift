@@ -6,11 +6,25 @@
 //
 
 import Testing
+@testable import EmojiChallenge
 
 struct EmojiChallengeTests {
 
     @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+        let mockRepository = MockFriendsRepository(isLoading: true, friends: [])
+        
+        var friendsListView = await FriendsFeedView()
+            .environment(
+                \.friendsRepository,
+                 FriendsRepositoryWrapper(underlyingRepository: mockRepository)
+            )
+        
+        print(friendsListView)
+        
+        await confirmation { confirmation in
+            mockRepository.fetchFriendsClosure = {
+                confirmation.confirm()
+            }
+        }
     }
-
 }
