@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FriendCell: View {
+struct FriendCellView: View {
     private enum Constants {
         static let mainCornerRadius: CGFloat = 20
         static let mainVStackSpacing: CGFloat = 20
@@ -146,7 +146,7 @@ struct FriendCell: View {
 }
 
 #Preview {
-    FriendCell(
+    FriendCellView(
         friend: .init(
             id: "1",
             userId: "1",

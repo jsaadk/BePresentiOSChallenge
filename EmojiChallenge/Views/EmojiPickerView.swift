@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct EmojiPicker: View {
+struct EmojiPickerView: View {
     let emojis: [Reaction.Emoji]
     let onEmojiSelected: (Reaction.Emoji) -> Void
     
@@ -46,7 +46,7 @@ struct EmojiPicker: View {
 
 
 #Preview {
-    EmojiPicker(emojis: Reaction.Emoji.allCases) { _ in
+    EmojiPickerView(emojis: Reaction.Emoji.allCases) { _ in
         
     }
 }

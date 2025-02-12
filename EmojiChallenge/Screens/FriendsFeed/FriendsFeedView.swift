@@ -21,7 +21,7 @@ struct FriendsFeedView: View {
                 ? viewModel.placeholderFriends
                 : viewModel.friends
                 let elements = ForEach(friends) { friend in
-                    FriendCell(friend: friend) { action in
+                    FriendCellView(friend: friend) { action in
                         switch action {
                         case .didTapReaction(let reaction):
                             viewModel.applyReaction(reaction.emoji, to: friend)
@@ -45,7 +45,7 @@ struct FriendsFeedView: View {
                 fetchFriends()
             }
             .sheet(item: $viewModel.reactingToFriend, content: { friend in
-                EmojiPicker(
+                EmojiPickerView(
                     emojis: Reaction.Emoji.allCases,
                     onEmojiSelected: { emoji in
                         viewModel.applyReactionToSelectedFriend(emoji)
