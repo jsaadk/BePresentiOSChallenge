@@ -19,3 +19,9 @@ Each subfolder in this space should represent a single screen UI in the app. The
 ### Views 
 Common UI componentes that can be used by different screens
 
+### Mocks
+In this folder we store mock implementations of our main components and mock data generators. 
+
+
+# Testing strategy
+Every service and repository is defined as a protocol. Every dependency is injected. This allows us to easily inject mocked elements during testing. Refer to the unit test example contained in EmojiChallengeTests.swift
