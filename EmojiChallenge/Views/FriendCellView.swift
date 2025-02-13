@@ -56,7 +56,7 @@ struct FriendCellView: View {
                     .font(.headline)
                     .foregroundStyle(Color.AppTheme.primary)
                     .lineLimit(1)
-                Text("\(friend.timestamp.relativeDateString)")
+                Text(friend.relativeTimestamp)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.AppTheme.gray)
             }

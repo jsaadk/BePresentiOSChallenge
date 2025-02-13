@@ -9,7 +9,6 @@ import Testing
 @testable import EmojiChallenge
 
 struct EmojiChallengeTests {
-
     @Test func example() async throws {
         let mockRepository = MockFriendsRepository(friendsToReturn: [])
         
